@@ -4,7 +4,8 @@
   "description": "A Twitter Client for creating tweets plus more",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server"
+    "start": "node server",
+    "dev":"nodemo server"
   },
   "keywords": [
     "Twitter",
