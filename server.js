@@ -15,7 +15,7 @@ if (process.env.NODE_ENV === "production") {
   }
   
 //connect to DB
-mongoose.connect(process.env.dbConnectLocal, {
+mongoose.connect(process.env.dbConnectCloud, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false
