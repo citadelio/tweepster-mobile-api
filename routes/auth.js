@@ -21,9 +21,8 @@ router.post('/mobile', isRequestFromMobile, async (req, res) => {
               email,
               userid:userID,
               authtoken: authToken,
-                authsecret: authTokenSecret
+              authsecret: authTokenSecret
           }) 
-          console.log(user)
           await user.save();
       }
       //generate token using jwt

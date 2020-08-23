@@ -5,6 +5,7 @@ const isRequestFromMobile = require("../middleware/mobilecheck");
 
 // Models
 const UserModel = require('../models/User');
+const { twitterConfig } = require('../middleware/helperFunctions');
 
 router.get('/detail', protectedRoute, async(req, res)=>{
     try{
@@ -18,7 +19,17 @@ router.get('/detail', protectedRoute, async(req, res)=>{
                 ]
               });
         }
-        return res.json({user, status:true})
+        //configure twitter client
+        // const client = new Twitter({
+        //   consumer_key: process.env.TAPP_IPHONE_KEY, 
+        //   consumer_secret: process.env.TAPP_IPHONE_SECRET,
+        //   access_token_key: user.authtoken, 
+        //   access_token_secret: user.authsecret
+        // })
+        const client = twitterConfig(user.authtoken, user.authsecret)
+        // get user details from twitter
+       const twitterUser =  await client.get("account/verify_credentials");
+        return res.json({user: twitterUser, status:true})
     }
     catch(err){
       return res.json({

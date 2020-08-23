@@ -1,3 +1,5 @@
+const Twitter = require('twitter-lite');
+  
   const prettyCurrency = amount => {
     const formatter = new Intl.NumberFormat("en-NG", {
       style: "currency",
@@ -17,6 +19,16 @@
       })
       .join(" ");
   }
+  
+  const twitterConfig = (authtoken, authsecret) => {
+     //configure twitter client
+     return new Twitter({
+      consumer_key: process.env.TAPP_IPHONE_KEY, 
+      consumer_secret: process.env.TAPP_IPHONE_SECRET,
+      access_token_key: authtoken, 
+      access_token_secret: authsecret
+    })
+  }
 
 
 
@@ -24,4 +36,5 @@
 module.exports = {
   prettyCurrency,
   makeTitleCase, 
+  twitterConfig
 }

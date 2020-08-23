@@ -15,7 +15,7 @@ if (process.env.NODE_ENV === "production") {
   }
   
 //connect to DB
-mongoose.connect(process.env.dbConnectCloud, {
+mongoose.connect(process.env.dbConnectLocal, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false
@@ -30,9 +30,10 @@ app.use(bodyParser.json())
 //Routes
 app.use('/auth', require('./routes/auth'));
 app.use('/users', require('./routes/users'));
+app.use('/tweets', require('./routes/tweets'));
 app.get('/', (req, res)=>{
   res.json({
-    msg:`Welcome to ${process.env.SITE_NAME}. Download the app on the Android Playstore and Apple Appstore`
+    msg:`Welcome to ${process.env.SITE_NAME}. Download the app on the Google Playstore and Apple Appstore`
   })
 //   res.sendFile('index.html')
 })
