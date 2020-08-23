@@ -20,7 +20,10 @@ router.get('/get-timeline-tweets/:id',protectedRoute, isRequestFromMobile, async
           });
     }
     const client = twitterConfig(user.authtoken, user.authsecret)
-    const tweets = await client.get("statuses/home_timeline",metadata)
+    let tweets = await client.get("statuses/home_timeline",metadata)
+    tweets = tweets.map((a) => ({sort: Math.random(), value: a}))
+                  .sort((a, b) => a.sort - b.sort)
+                  .map((a) => a.value);
     return res.json(tweets)
   }catch(err){
      
