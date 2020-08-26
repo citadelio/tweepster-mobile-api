@@ -30,5 +30,28 @@ router.get('/get-timeline-tweets/:id',protectedRoute, isRequestFromMobile, async
   }
 })
 
+router.get('/single-tweet/:id',protectedRoute, isRequestFromMobile, async (req, res) => {
+  let tweetId = req.params.id
+  // const metadata = lastId == 1 ? {exclude_replies:true,count:30,since_id:lastId}:{exclude_replies:true,count:30,max_id:lastId}
+  try{
+    const user = await UserModel.findOne({_id:req.userid})
+    if(!user){
+        return res.json({
+            errors: [
+              {
+                msg: "User not found",
+              }
+            ]
+          });
+    }
+    const client = twitterConfig(user.authtoken, user.authsecret)
+    let tweet = await client.get(`statuses/show/${tweetId}`,metadata)
+   
+    return res.json(tweet)
+  }catch(err){
+     
+  }
+})
+
 
 module.exports = router;
