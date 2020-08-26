@@ -45,7 +45,7 @@ router.get('/single-tweet/:id',protectedRoute, isRequestFromMobile, async (req, 
           });
     }
     const client = twitterConfig(user.authtoken, user.authsecret)
-    let tweet = await client.get(`statuses/show/${tweetId}`,metadata)
+    let tweet = await client.get(`statuses/show/${tweetId}`)
    
     return res.json(tweet)
   }catch(err){
