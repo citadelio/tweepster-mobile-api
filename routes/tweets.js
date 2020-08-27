@@ -30,7 +30,7 @@ router.get('/get-timeline-tweets/:id',protectedRoute, isRequestFromMobile, async
   }
 })
 
-router.get('/single-tweet/:id',protectedRoute, isRequestFromMobile, async (req, res) => {
+router.get('/single-tweet/:id', protectedRoute, isRequestFromMobile, async (req, res) => {
   let tweetId = req.params.id
   try{
     const user = await UserModel.findOne({_id:req.userid})
