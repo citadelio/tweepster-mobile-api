@@ -78,7 +78,7 @@ router.get('/fetch-friends/:count',protectedRoute, isRequestFromMobile,  async(r
     }
 });
 
-router.get('/fetch-follower/:count',protectedRoute, isRequestFromMobile,  async(req, res)=>{
+router.get('/fetch-followers/:count',protectedRoute, isRequestFromMobile,  async(req, res)=>{
     try{
       let cursor = req.params.count;
       const user = await UserModel.findOne({_id:req.userid})
