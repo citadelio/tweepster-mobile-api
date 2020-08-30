@@ -147,22 +147,22 @@ router.get('/user-details/:id',protectedRoute, isRequestFromMobile,  async(req, 
     })
 
 
-// router.post('/friend-create',protectedRoute, isRequestFromMobile,  async(req, res)=>{
-router.post('/friend-create',  async(req, res)=>{
+router.post('/friend-create',protectedRoute, isRequestFromMobile,  async(req, res)=>{
+// router.post('/friend-create',  async(req, res)=>{
   try{
     let user_id = req.body.id;
-    // const user = await UserModel.findOne({_id:req.userid})
-    // if(!user){
-    //   return res.json({
-    //     errors: [
-    //       {
-    //         msg: "User not found",
-    //       }
-    //     ]
-    //   });
-    // }
-    // const client = twitterConfig(user.authtoken, user.authsecret)
-      const client = twitterConfig("586786732-K9o4MwJp8IyWA8GEqcOSBd75QTmRFrO1HPYs7pB4", "a5nLNe58c0bixr87EMI7x99AOIDGK67GpJs3LhnPX512c")
+    const user = await UserModel.findOne({_id:req.userid})
+    if(!user){
+      return res.json({
+        errors: [
+          {
+            msg: "User not found",
+          }
+        ]
+      });
+    }
+    const client = twitterConfig(user.authtoken, user.authsecret)
+      // const client = twitterConfig("586786732-K9o4MwJp8IyWA8GEqcOSBd75QTmRFrO1HPYs7pB4", "a5nLNe58c0bixr87EMI7x99AOIDGK67GpJs3LhnPX512c")
     const response =  await client.post("friendships/create",{user_id});
     return res.json(response);
 
