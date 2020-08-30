@@ -78,5 +78,34 @@ router.get('/fetch-friends/:count',protectedRoute, isRequestFromMobile,  async(r
     }
 });
 
+router.get('/user-details/:id',protectedRoute, isRequestFromMobile,  async(req, res)=>{
+      try{
+        let user_id = req.params.id;
+        const user = await UserModel.findOne({_id:req.userid})
+        if(!user){
+          return res.json({
+            errors: [
+              {
+                msg: "User not found",
+              }
+            ]
+          });
+        }
+        const client = twitterConfig(user.authtoken, user.authsecret)
+        const userDetails =  await client.get("users/show",{user_id, include_entities:false});
+        return res.json(userDetails)
+
+      }
+      catch(err){
+        return res.json({
+          errors: [
+            {
+              msg: "An error occurred, try again",
+              err
+            }
+          ]
+        });
+      }
+    })
 
 module.exports = router;
