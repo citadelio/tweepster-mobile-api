@@ -57,7 +57,7 @@ router.get('/fetch-friends/:count',protectedRoute, isRequestFromMobile,  async(r
       const client = twitterConfig(user.authtoken, user.authsecret)
       // const client = twitterConfig("586786732-K9o4MwJp8IyWA8GEqcOSBd75QTmRFrO1HPYs7pB4", "a5nLNe58c0bixr87EMI7x99AOIDGK67GpJs3LhnPX512c")
       // get user details from twitter
-       const friendIds =  await client.get("friends/ids",{cursor, count:20});
+       const friendIds =  await client.get("friends/ids",{cursor, count:50});
         
        const friendList =  await client.get("friendships/lookup",{user_id:friendIds.ids.join()});
        return res.json({
@@ -96,7 +96,7 @@ router.get('/fetch-followers/:count',protectedRoute, isRequestFromMobile,  async
       const client = twitterConfig(user.authtoken, user.authsecret)
       // const client = twitterConfig("586786732-K9o4MwJp8IyWA8GEqcOSBd75QTmRFrO1HPYs7pB4", "a5nLNe58c0bixr87EMI7x99AOIDGK67GpJs3LhnPX512c")
       // get user details from twitter
-       const followersIds =  await client.get("followers/ids",{cursor, count:20});
+       const followersIds =  await client.get("followers/ids",{cursor, count:50});
         
        const followersList =  await client.get("friendships/lookup",{user_id:followersIds.ids.join()});
        return res.json({
