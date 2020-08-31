@@ -26,7 +26,47 @@ router.get('/get-timeline-tweets/:id',protectedRoute, isRequestFromMobile, async
                   .map((a) => a.value);
     return res.json(tweets)
   }catch(err){
-     
+    return res.json({
+      errors: [
+        {
+          msg: "An error occurred, try again",
+          err
+        }
+      ]
+    });
+  }
+})
+
+router.get('/get-user-tweets/:id/:last',protectedRoute, isRequestFromMobile, async (req, res) => {
+  let user_id = req.params.id
+  let lastId = req.params.last
+  const metadata = lastId == 1 ? {user_id, since_id:lastId}:{user_id, max_id:lastId}
+  try{
+    const user = await UserModel.findOne({_id:req.userid})
+    if(!user){
+        return res.json({
+            errors: [
+              {
+                msg: "User not found",
+              }
+            ]
+          });
+    }
+    const client = twitterConfig(user.authtoken, user.authsecret)
+    let tweets = await client.get("statuses/user_timeline",metadata)
+    // tweets = tweets.map((a) => ({sort: Math.random(), value: a}))
+    //               .sort((a, b) => a.sort - b.sort)
+    //               .map((a) => a.value);
+    return res.json(tweets)
+  }catch(err){
+    return res.json({
+      errors: [
+        {
+          msg: "An error occurred, try again",
+          err
+        }
+      ]
+    });
   }
 })
 
@@ -48,7 +88,14 @@ router.get('/single-tweet/:id', protectedRoute, isRequestFromMobile, async (req,
     let tweet = await client.get(`statuses/show/${tweetId}`)
     return res.json(tweet)
   }catch(err){
-     
+    return res.json({
+      errors: [
+        {
+          msg: "An error occurred, try again",
+          err
+        }
+      ]
+    });
   }
 })
 
