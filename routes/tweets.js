@@ -85,7 +85,9 @@ router.get('/single-tweet/:id', protectedRoute, isRequestFromMobile, async (req,
     }
     const client = twitterConfig(user.authtoken, user.authsecret)
    
-    let tweet = await client.get(`statuses/show/${tweetId}`)
+    let tweet = await client.get(`statuses/show/${tweetId}`,{
+      tweet_mode:"extended"
+    })
     return res.json(tweet)
   }catch(err){
     return res.json({
