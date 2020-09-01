@@ -7,7 +7,7 @@ const UserModel = require('../models/User');
 /* MOBILE APP AUTH */
 router.get('/get-timeline-tweets/:id',protectedRoute, isRequestFromMobile, async (req, res) => {
   let lastId = req.params.id
-  const metadata = lastId == 1 ? {exclude_replies:true,since_id:lastId}:{exclude_replies:true,max_id:lastId}
+  const metadata = lastId == 1 ? {exclude_replies:true,since_id:lastId, tweet_mode:"extended"}:{exclude_replies:true,max_id:lastId, tweet_mode:"extended"}
   try{
     const user = await UserModel.findOne({_id:req.userid})
     if(!user){
@@ -40,7 +40,7 @@ router.get('/get-timeline-tweets/:id',protectedRoute, isRequestFromMobile, async
 router.get('/get-user-tweets/:id/:last',protectedRoute, isRequestFromMobile, async (req, res) => {
   let user_id = req.params.id
   let lastId = req.params.last
-  const metadata = lastId == 1 ? {user_id, since_id:lastId}:{user_id, max_id:lastId}
+  const metadata = lastId == 1 ? {user_id, since_id:lastId, tweet_mode:"extended"}:{user_id, max_id:lastId, tweet_mode:"extended"}
   try{
     const user = await UserModel.findOne({_id:req.userid})
     if(!user){
