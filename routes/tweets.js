@@ -103,6 +103,7 @@ router.get('/single-tweet/:id', protectedRoute, isRequestFromMobile, async (req,
 
 router.post('/post', protectedRoute, isRequestFromMobile, async (req, res) => {
   const {tweet} = req.body
+  console.log(tweet)
   try{
     const user = await UserModel.findOne({_id:req.userid})
     if(!user){
@@ -115,10 +116,10 @@ router.post('/post', protectedRoute, isRequestFromMobile, async (req, res) => {
           });
     }
     const client = twitterConfig(user.authtoken, user.authsecret)
-    let tweet = await client.post(`statuses/update`,{
-      status:"Hello World Guys!!"
+    let response = await client.post(`statuses/update`,{
+      status:tweet[0].text
     })
-    return res.json(tweet)
+    return res.json(response)
   }
   catch(err){
     return res.json({
