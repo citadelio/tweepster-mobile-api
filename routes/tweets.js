@@ -102,8 +102,7 @@ router.get('/single-tweet/:id', protectedRoute, isRequestFromMobile, async (req,
 })
 
 router.post('/post', protectedRoute, isRequestFromMobile, async (req, res) => {
-  const {tweet} = req.body
-  console.log(tweet)
+  const {tweet, tweetData} = req.body
   try{
     const user = await UserModel.findOne({_id:req.userid})
     if(!user){
@@ -116,9 +115,13 @@ router.post('/post', protectedRoute, isRequestFromMobile, async (req, res) => {
           });
     }
     const client = twitterConfig(user.authtoken, user.authsecret)
-    let response = await client.post(`statuses/update`,{
+    let payload = tweetData?{
+      status:tweet[0].text.concat(` @${tweetData.retweeted_status?tweetData.retweeted_status.user.screen_name:tweetData.user.screen_name}`),
+      in_reply_to_status_id: tweetData.retweeted_status?tweetData.retweeted_status.id_str:tweetData.id_str
+    } : {
       status:tweet[0].text
-    })
+    }
+    let response = await client.post(`statuses/update`,payload)
     return res.json(response)
   }
   catch(err){
