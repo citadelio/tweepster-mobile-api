@@ -5,10 +5,11 @@ const isRequestFromMobile = require("../middleware/mobilecheck");
 
 // Models
 const UserModel = require('../models/User');
-const { twitterConfig } = require('../middleware/helperFunctions');
+const { twitterConfig, getKeys } = require('../middleware/helperFunctions');
 
-router.get('/detail', protectedRoute, isRequestFromMobile,  async(req, res)=>{
+router.get('/detail/:label', protectedRoute, isRequestFromMobile,  async(req, res)=>{
     try{
+      const {label} = req.params
         const user = await UserModel.findOne({_id:req.userid})
         if(!user){
             return res.json({
@@ -21,7 +22,7 @@ router.get('/detail', protectedRoute, isRequestFromMobile,  async(req, res)=>{
         }
        
         
-        const client = twitterConfig(user.authtoken, user.authsecret)
+        const client = twitterConfig(user.authtoken, user.authsecret, "api", label)
         // get user details from twitter
        const twitterUser =  await client.get("account/verify_credentials");
         return res.json({user: twitterUser, status:true})
@@ -38,10 +39,11 @@ router.get('/detail', protectedRoute, isRequestFromMobile,  async(req, res)=>{
     }
 });
 
-router.get('/fetch-friends/:count',protectedRoute, isRequestFromMobile,  async(req, res)=>{
+router.get('/fetch-friends/:count/:label',protectedRoute, isRequestFromMobile,  async(req, res)=>{
 // router.get('/fetch-friends/:count',  async(req, res)=>{
     try{
-      let cursor = req.params.count;
+      let cursor = req.params.count
+          label = req.params.label;
       const user = await UserModel.findOne({_id:req.userid})
       if(!user){
         return res.json({
@@ -54,7 +56,7 @@ router.get('/fetch-friends/:count',protectedRoute, isRequestFromMobile,  async(r
       }
       
       
-      const client = twitterConfig(user.authtoken, user.authsecret)
+      const client = twitterConfig(user.authtoken, user.authsecret, "api", label)
       // const client = twitterConfig("586786732-K9o4MwJp8IyWA8GEqcOSBd75QTmRFrO1HPYs7pB4", "a5nLNe58c0bixr87EMI7x99AOIDGK67GpJs3LhnPX512c")
       // get user details from twitter
        const friendIds =  await client.get("friends/ids",{cursor, count:50});
@@ -78,9 +80,10 @@ router.get('/fetch-friends/:count',protectedRoute, isRequestFromMobile,  async(r
     }
 });
 
-router.get('/fetch-followers/:count',protectedRoute, isRequestFromMobile,  async(req, res)=>{
+router.get('/fetch-followers/:count/:label',protectedRoute, isRequestFromMobile,  async(req, res)=>{
     try{
-      let cursor = req.params.count;
+      let cursor = req.params.count,
+          label = req.params.label;
       const user = await UserModel.findOne({_id:req.userid})
       if(!user){
         return res.json({
@@ -93,7 +96,7 @@ router.get('/fetch-followers/:count',protectedRoute, isRequestFromMobile,  async
       }
       
       
-      const client = twitterConfig(user.authtoken, user.authsecret)
+      const client = twitterConfig(user.authtoken, user.authsecret, "api", label)
       // const client = twitterConfig("586786732-K9o4MwJp8IyWA8GEqcOSBd75QTmRFrO1HPYs7pB4", "a5nLNe58c0bixr87EMI7x99AOIDGK67GpJs3LhnPX512c")
       // get user details from twitter
        const followersIds =  await client.get("followers/ids",{cursor, count:50});
@@ -117,9 +120,10 @@ router.get('/fetch-followers/:count',protectedRoute, isRequestFromMobile,  async
     }
 });
 
-router.get('/user-details/:id',protectedRoute, isRequestFromMobile,  async(req, res)=>{
+router.get('/user-details/:id/:label',protectedRoute, isRequestFromMobile,  async(req, res)=>{
       try{
-        let user_id = req.params.id;
+        let user_id = req.params.id,
+            label = req.params.label;
         const user = await UserModel.findOne({_id:req.userid})
         if(!user){
           return res.json({
@@ -130,7 +134,7 @@ router.get('/user-details/:id',protectedRoute, isRequestFromMobile,  async(req, 
             ]
           });
         }
-        const client = twitterConfig(user.authtoken, user.authsecret)
+        const client = twitterConfig(user.authtoken, user.authsecret, "api", label)
         const userDetails =  await client.get("users/show",{user_id, include_entities:false});
         return res.json(userDetails)
       }
@@ -150,7 +154,8 @@ router.get('/user-details/:id',protectedRoute, isRequestFromMobile,  async(req, 
 router.post('/friend-create',protectedRoute, isRequestFromMobile,  async(req, res)=>{
 // router.post('/friend-create',  async(req, res)=>{
   try{
-    let user_id = req.body.id;
+    let user_id = req.body.id,
+        label = req.body.label;
     const user = await UserModel.findOne({_id:req.userid})
     if(!user){
       return res.json({
@@ -161,7 +166,7 @@ router.post('/friend-create',protectedRoute, isRequestFromMobile,  async(req, re
         ]
       });
     }
-    const client = twitterConfig(user.authtoken, user.authsecret)
+    const client = twitterConfig(user.authtoken, user.authsecret, "api", label)
       // const client = twitterConfig("586786732-K9o4MwJp8IyWA8GEqcOSBd75QTmRFrO1HPYs7pB4", "a5nLNe58c0bixr87EMI7x99AOIDGK67GpJs3LhnPX512c")
     const response =  await client.post("friendships/create",{user_id});
     return res.json(response);
@@ -181,7 +186,8 @@ router.post('/friend-create',protectedRoute, isRequestFromMobile,  async(req, re
 
 router.post('/friend-destroy',protectedRoute, isRequestFromMobile,  async(req, res)=>{
   try{
-    let user_id = req.body.id;
+    let user_id = req.body.id,
+        label = req.body.label;
     const user = await UserModel.findOne({_id:req.userid})
     if(!user){
       return res.json({
@@ -192,7 +198,7 @@ router.post('/friend-destroy',protectedRoute, isRequestFromMobile,  async(req, r
         ]
       });
     }
-    const client = twitterConfig(user.authtoken, user.authsecret)
+    const client = twitterConfig(user.authtoken, user.authsecret, "api", label)
       // const client = twitterConfig("586786732-K9o4MwJp8IyWA8GEqcOSBd75QTmRFrO1HPYs7pB4", "a5nLNe58c0bixr87EMI7x99AOIDGK67GpJs3LhnPX512c")
     const response =  await client.post("friendships/destroy",{user_id});
     return res.json(response);
@@ -208,5 +214,22 @@ router.post('/friend-destroy',protectedRoute, isRequestFromMobile,  async(req, r
       ]
     });
   }
+})
+
+router.post('/getkeys', isRequestFromMobile, async (req, res)=>{
+    try{
+      const {label} = req.body
+      let keys = await getKeys(label);
+      return res.json(keys);
+    }catch(err){
+      return res.json({
+        errors: [
+          {
+            msg: "An error occurred, try again",
+            err
+          }
+        ]
+      });
+    }
 })
 module.exports = router;

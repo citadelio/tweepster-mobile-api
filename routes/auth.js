@@ -24,7 +24,13 @@ router.post('/mobile', isRequestFromMobile, async (req, res) => {
               authsecret: authTokenSecret
           }) 
           await user.save();
+      }else{
+        await UserModel.updateOne({userid:userID},{
+          authtoken: authToken,
+          authsecret: authTokenSecret
+        })
       }
+      console.log(user)
       //generate token using jwt
       const token = jwt.sign({userid: user.id}, process.env.jwtSecret, {
         expiresIn : 42000
