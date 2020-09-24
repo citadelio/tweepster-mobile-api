@@ -239,6 +239,41 @@ router.post('/postTweet',protectedRoute, isRequestFromMobile,  async (req, res) 
 
 })
 
+
+router.post('/likeTweet',protectedRoute, isRequestFromMobile,  async (req, res) => {
+  try{
+    const user = await UserModel.findOne({_id:req.userid})
+    if(!user){
+        return res.json({
+            errors: [
+              {
+                msg: "User not found",
+              }
+            ]
+          });
+    }
+
+    const {id, label} = req.body    
+    const client = twitterConfig(user.authtoken, user.authsecret, "api", label)
+        let response = await client.post(`favorites/create`,{
+          id
+        })
+        return res.json(response)    
+  }
+  catch(err){
+    console.log(err)
+    return res.json({
+      errors: [
+        {
+          msg: "An error occurred, try again",
+          err
+        }
+      ]
+    });
+  }
+
+})
+
 router.get('/serverlabels', (req, res)=>{
   console.log("innnn")
     return res.json(labels);
