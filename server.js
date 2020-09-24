@@ -42,9 +42,9 @@ app.get('/download-video/:id', async(req, res)=>{
     let tweet = await client.get(`statuses/show/${tweetId}`,{
       tweet_mode:"extended"
     })
-    console.log(tweet)
     if(tweet && tweet.extended_entities){
-      console.log(tweet.extended_entities.media.video_info.variants[1].url)
+      console.log(tweet.extended_entities.media)
+      // console.log(tweet.extended_entities.media.video_info.variants[1].url)
         res.download(tweet.extended_entities.media.video_info.variants[1].url)
     }
   }catch(err){
