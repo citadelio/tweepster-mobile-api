@@ -170,7 +170,8 @@ router.post('/postTweetWithImage',protectedRoute, isRequestFromMobile,  async (r
         if(stringArray.length === req.files.length){
           let payload = 
           screen_name && id_str ?{
-            status:tweetText.concat(` @${screen_name}`),
+            // status:tweetText.concat(` @${screen_name}`),
+            status:(`@${screen_name} `).concat(tweetText),
             in_reply_to_status_id:id_str,
             media_ids: stringArray.join()
           } : 
