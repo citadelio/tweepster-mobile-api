@@ -31,6 +31,24 @@ app.use(bodyParser.json())
 app.use('/auth', require('./routes/auth'));
 app.use('/users', require('./routes/users'));
 app.use('/tweets', require('./routes/tweets'));
+app.get('/download-video/:id', async(req, res)=>{
+  try{
+    console.log("here")
+    let tweetId = req.params.id;
+    console.log(tweetId)
+    const client = twitterConfig("586786732-K9o4MwJp8IyWA8GEqcOSBd75QTmRFrO1HPYs7pB4", "a5nLNe58c0bixr87EMI7x99AOIDGK67GpJs3LhnPX512c", "api", "iphone")
+   
+    let tweet = await client.get(`statuses/show/${tweetId}`,{
+      tweet_mode:"extended"
+    })
+    if(tweet && tweet.extended_entities){
+      console.log(tweet.extended_entities.media.video_info.variants[1].url)
+        res.download(tweet.extended_entities.media.video_info.variants[1].url)
+    }
+  }catch(err){
+
+  }
+})
 app.get('/', (req, res)=>{
   res.json({
     msg:`Welcome to ${process.env.SITE_NAME}. Download the app on the Google Playstore and Apple Appstore`
