@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tweepster | Download Video | </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha512-MoRNloxbStBcD8z3M/2BmnT+rg4IsMxPkXaGh2zD6LGNNFE80W3onsAhRcMAMrSoyWL9xD7Ert0men7vR8LUZg==" crossorigin="anonymous" />
+</head>
+<body>
+    <div class="container">
+    <h1 class="text-center">Download Video</h1><br/>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <img  class="img-responsive img-thumbnail" style="width:100%; margin-bottom:15px;" src=<%= tweet.extended_entities.media[0].media_url_https %> />
+        </div>
+        <div class="col-sm-6">
+            <a class="btn btn-info btn-lg" download href=<%=tweet.extended_entities.media[0].video_info.variants[0].url %> >Download (low quality)</a><br/><br/>
+            <a class="btn btn-success btn-lg" download href=<%=tweet.extended_entities.media[0].video_info.variants[1].url %> >Download (medium quality)</a><br/><br/>
+            <a class="btn btn-primary btn-lg" download href=<%=tweet.extended_entities.media[0].video_info.variants[2].url %> >Download (high quality)</a><br/><br/>
+        </div>
+    </div>
+
+    
+</div>
+</body>
+</html>
