@@ -43,9 +43,9 @@ app.get('/download-video/:id', async(req, res)=>{
       tweet_mode:"extended"
     })
     if(tweet && tweet.extended_entities){
-      console.log(tweet.extended_entities.media)
-      // console.log(tweet.extended_entities.media.video_info.variants[1].url)
-        res.download(tweet.extended_entities.media.video_info.variants[1].url)
+      console.log(tweet.extended_entities.media[0].video_info.variants)
+      // console.log(tweet.extended_entities.media[0].video_info.variants[1].url)
+        res.download(tweet.extended_entities.media[0].video_info.variants[1].url)
     }
   }catch(err){
 
