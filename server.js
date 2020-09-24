@@ -6,6 +6,7 @@ const fs = require('fs');
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose');
 const app = express();
+const { twitterConfig } = require('./middleware/helperFunctions');
 
 
 //MODELS
