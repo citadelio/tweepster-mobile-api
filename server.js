@@ -50,6 +50,11 @@ app.get('/download-video/:id', async(req, res)=>{
 
   }
 })
+
+app.get('/privacy-policy', (req, res)=>{
+  res.render('pages/privacy');
+})
+
 app.get('/', (req, res)=>{
   res.json({
     msg:`Welcome to ${process.env.SITE_NAME}. Download the app on the Google Playstore and Apple Appstore`
@@ -58,9 +63,7 @@ app.get('/', (req, res)=>{
  
 })
 
-app.get('/privacy-policy', (req, res)=>{
-  res.render('pages/privacy');
-})
+
 
 //handle every other request
 app.get('/*', (req, res)=> {
