@@ -58,6 +58,10 @@ app.get('/', (req, res)=>{
  
 })
 
+app.get('/privacy-policy', (req, res)=>{
+  res.render('pages/privacy');
+})
+
 //handle every other request
 app.get('/*', (req, res)=> {
     // res.json([{"error":"invalid request"}])
