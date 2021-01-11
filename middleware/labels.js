@@ -12,7 +12,7 @@ module.exports = [
         label:"tweepster"
     },
     {
-        title:"ZAPP",
-        label:"zapp"
+        title:"Twitter for Xiaomi",
+        label:"xiaomi"
     },
 ]

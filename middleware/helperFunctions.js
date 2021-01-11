@@ -28,7 +28,7 @@ const Twitter = require('twitter-lite');
         keys = { key:process.env.TAPP_S10_KEY, secret:process.env.TAPP_S10_SECRET}
       }else if(label === "tweepster"){
         keys = { key:process.env.TAPP_TWEEPSTER_KEY, secret:process.env.TAPP_TWEEPSTER_SECRET}
-      }else if(label === "zapp"){
+      }else if(label === "xiaomi"){
         keys = { key:process.env.TAPP_ZAPP_KEY, secret:process.env.TAPP_ZAPP_SECRET}
       }
       return keys;
